@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Github User Submission 2</string>
+    <string name="name">Nama</string>
+    <string name="user_name">Nama pengguna</string>
+    <string name="followers">Pengikut\n%s</string>
+    <string name="following">Mengikuti\n%s</string>
+    <string name="followers_">Pengikut</string>
+    <string name="following_">Mengikuti</string>
+    <string name="dummy_number">18628</string>
+    <string name="credit_splash">Muhamad Irwan Ramadhan</string>
+    <string name="logo">Logo</string>
+    <string name="icon_followers">ikon_pengikut</string>
+    <string name="icon_repository">ikon_repositori</string>
+    <string name="icon_following">ikon_mengikuti</string>
+    <string name="repository">Repositori \n %s</string>
+    <string name="about">Tentang</string>
+    <string name="icon_company">ikon_perusahaan</string>
+    <string name="icon_location">ikon_lokasi</string>
+    <string name="search">Telusuri Nama Pengguna</string>
+    <string name="search_button">Tombol Pencarian</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Halo ini fragmen kosong</string>
+    <string name="change_language_settings">Ubah Pengaturan Bahasa</string>
+
+</resources>

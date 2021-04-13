@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Github User Submission 2</string>
+    <string name="name">Nama</string>
+    <string name="user_name">Username</string>
+    <string name="followers">Followers\n%s</string>
+    <string name="following">Following\n%s</string>
+    <string name="followers_">Followers</string>
+    <string name="following_">Following</string>
+    <string name="dummy_number">18628</string>
+    <string name="credit_splash">Muhamad Irwan Ramadhan</string>
+    <string name="logo">Logo</string>
+    <string name="icon_followers">icon_followers</string>
+    <string name="icon_repository">icon_repository</string>
+    <string name="icon_following">icon_following</string>
+    <string name="repository">Repository\n%s</string>
+    <string name="about">About</string>
+    <string name="icon_company">icon_company</string>
+    <string name="icon_location">icon_location</string>
+    <string name="search">Search Username</string>
+    <string name="search_button">Search Button</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="change_language_settings">Change Language Settings</string>
+</resources>
