@@ -1,1 +1,1 @@
-# Githubuser-Submission2
+Aplikasi Submission 1 Dicoding Belajar Fundamental Aplikasi Android
