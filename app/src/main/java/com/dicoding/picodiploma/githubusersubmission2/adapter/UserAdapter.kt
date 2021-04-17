@@ -39,7 +39,8 @@ class UserAdapter: RecyclerView.Adapter<UserAdapter.UserViewHolder> (){
 
     inner class UserViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = ItemRowUserBinding.bind(itemView)
-
+        val width = 350
+        val height = 550
         fun bind(userModel: UserModel) {
             binding.root.setOnClickListener{
                 onItemClickCallback?.onItemClicked(userModel)
@@ -48,7 +49,7 @@ class UserAdapter: RecyclerView.Adapter<UserAdapter.UserViewHolder> (){
             with(itemView){
                 Glide.with(itemView.context)
                     .load(userModel.avatar)
-                    .apply(RequestOptions()).override(350,550)
+                    .apply(RequestOptions()).override(width,height)
                     .into(binding.imgItemAvatar)
 
                 binding.tvItemUsername.text = userModel.username

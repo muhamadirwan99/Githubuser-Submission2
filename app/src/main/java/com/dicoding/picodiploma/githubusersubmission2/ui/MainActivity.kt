@@ -3,7 +3,6 @@ package com.dicoding.picodiploma.githubusersubmission2.ui
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.Settings
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -67,6 +66,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun showSelectedUser(user: UserModel) {
         val moveIntent = Intent(this@MainActivity, DetailUser::class.java)
+        moveIntent.putExtra(DetailUser.EXTRA_USER, user)
         moveIntent.putExtra(DetailUser.EXTRA_USERNAME, user.username)
         startActivity(moveIntent)
     }
@@ -76,10 +76,17 @@ class MainActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.action_change_settings) {
-            val mIntent = Intent(Settings.ACTION_LOCALE_SETTINGS)
-            startActivity(mIntent)
+        when(item.itemId){
+            R.id.action_favorite -> {
+                val moveIntent = Intent(this@MainActivity, FavoriteUser::class.java)
+                startActivity(moveIntent)
+            }
+            R.id.action_change_settings -> {
+                val mIntent = Intent(this@MainActivity, Settings::class.java)
+                startActivity(mIntent)
+            }
         }
+
         return super.onOptionsItemSelected(item)
     }
 

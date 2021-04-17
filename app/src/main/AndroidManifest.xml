@@ -4,6 +4,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <permission android:name="com.dicoding.picodiploma.githubusersubmission2.READ_DATABASE" android:protectionLevel="normal"/>
+    <permission android:name="com.dicoding.picodiploma.githubusersubmission2.WRITE_DATABASE" android:protectionLevel="normal"/>
+
     <application
         android:allowBackup="true"
         android:fillViewport="true"
@@ -13,18 +16,36 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GithubUserSubmission2"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.SplashScreen"
+        <provider
+            android:name=".db.GithubProvider"
+            android:authorities="com.dicoding.picodiploma.githubusersubmission2"
+            android:enabled="true"
+            android:exported="true"
+            android:readPermission="com.dicoding.picodiploma.githubusersubmission2.READ_DATABASE"
+            android:writePermission="com.dicoding.picodiploma.githubusersubmission2.WRITE_DATABASE"/>
+
+        <receiver
+            android:name=".ui.preference.AlarmReceiver"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".ui.Settings" />
+        <activity android:name=".ui.FavoriteUser" />
+        <activity
+            android:name=".ui.SplashScreen"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".ui.DetailUser"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".ui.MainActivity">
-        </activity>
+        <activity android:name=".ui.MainActivity" />
     </application>
-
+    <queries>
+        <package android:name="com.dicoding.picodiploma.githubusersubmission2" />
+    </queries>
 </manifest>

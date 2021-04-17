@@ -59,11 +59,13 @@ class FollowingFragment : Fragment() {
         viewModel.getFollowing(username.toString())
         Log.d("username: ", username.toString())
 
-        viewModel.getListFollowing().observe(activity!!, Observer {userItems ->
-            if (userItems != null) {
-                adapter.setData(userItems)
-            }
-        })
+        activity?.let {
+            viewModel.getListFollowing().observe(it, Observer { userItems ->
+                if (userItems != null) {
+                    adapter.setData(userItems)
+                }
+            })
+        }
     }
 
 }

@@ -1,5 +1,6 @@
 package com.dicoding.picodiploma.githubusersubmission2.ui
 
+import android.content.ContentValues
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +12,11 @@ import com.bumptech.glide.request.RequestOptions
 import com.dicoding.picodiploma.githubusersubmission2.R
 import com.dicoding.picodiploma.githubusersubmission2.adapter.SectionsPagerAdapter
 import com.dicoding.picodiploma.githubusersubmission2.databinding.ActivityDetailUserBinding
+import com.dicoding.picodiploma.githubusersubmission2.db.DatabaseContract
+import com.dicoding.picodiploma.githubusersubmission2.db.DatabaseContract.FavoriteColumns.Companion.CONTENT_URI
+import com.dicoding.picodiploma.githubusersubmission2.db.FavoriteHelper
+import com.dicoding.picodiploma.githubusersubmission2.helper.MappingHelper
+import com.dicoding.picodiploma.githubusersubmission2.model.FavoriteModel
 import com.dicoding.picodiploma.githubusersubmission2.model.UserModel
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -25,13 +31,19 @@ class DetailUser : AppCompatActivity(){
     companion object {
         @StringRes
         private val TAB_TITLES = intArrayOf(
-            R.string.following_,
-            R.string.followers_
+                R.string.following_,
+                R.string.followers_
         )
         const val EXTRA_USERNAME = "extra_username"
+        const val EXTRA_USER= "extra_user"
     }
 
     private lateinit var binding: ActivityDetailUserBinding
+    private lateinit var favoriteHelper: FavoriteHelper
+    private lateinit var favoriteList: ArrayList<FavoriteModel>
+    private var statusFavorite = false
+    private val userItems = UserModel()
+
 
     private var userName: String? = null
 
@@ -40,14 +52,62 @@ class DetailUser : AppCompatActivity(){
         binding = ActivityDetailUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        showLoading(true)
-        val username = intent.getStringExtra(EXTRA_USERNAME)
-        userName = username
+        val userList = intent.getParcelableExtra(EXTRA_USER) as UserModel
 
-        setUserDetail(username)
+        favoriteHelper = FavoriteHelper.getInstance(applicationContext)
+        favoriteHelper.open()
+        showLoading(true)
+
+        userName = userList.username
+        setUserDetail(userName)
 
         tabLayout()
 
+        checkFavorite(userList)
+
+        val selectedUser = "[FavoriteModel(username=$userName, avatar=${userList.avatar})]"
+
+        if (selectedUser == favoriteList.toString()){
+            statusFavorite = true
+        }else{
+            statusFavorite
+        }
+
+        setStatusFavorite(statusFavorite)
+
+        Log.d("Status : ", statusFavorite.toString())
+        binding.fabFav.setOnClickListener {
+            if (!statusFavorite) {
+                val values = ContentValues()
+                values.put(DatabaseContract.FavoriteColumns.USERNAME, userItems.username)
+                values.put(DatabaseContract.FavoriteColumns.AVATAR, userItems.avatar)
+
+                contentResolver.insert(CONTENT_URI, values)
+
+                statusFavorite = true
+                setStatusFavorite(statusFavorite)
+
+            } else {
+    //            contentResolver.delete(uriWithId, null, null)
+                favoriteHelper.deleteByUsername(userName.toString())
+                statusFavorite = false
+                setStatusFavorite(statusFavorite)
+            }
+        }
+    }
+
+    private fun setStatusFavorite(statusFavorite: Boolean) {
+        if (statusFavorite){
+            binding.fabFav.setImageResource(R.drawable.ic_baseline_favorite_24)
+        }else{
+            binding.fabFav.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+
+        }
+    }
+
+    private fun checkFavorite(user: UserModel) {
+        favoriteList = MappingHelper.mapCursorToArrayList(favoriteHelper.queryByUsername(user.username.toString()))
+        Log.d("checkfavourite", favoriteList.toString())
     }
 
     private fun tabLayout(){
@@ -66,21 +126,19 @@ class DetailUser : AppCompatActivity(){
 
     private fun setUserDetail(userNames : String?){
         val listData = ArrayList<UserModel>()
-
         val client = AsyncHttpClient()
         val url = "https://api.github.com/users/$userNames"
-        client.addHeader("Authorization", "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")
+        client.addHeader("Authorization", "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")
         client.addHeader("User-Agent", "Request")
         client.get(url, object : AsyncHttpResponseHandler(){
             override fun onSuccess(
-                statusCode: Int,
-                headers: Array<out Header>?,
-                responseBody: ByteArray
+                    statusCode: Int,
+                    headers: Array<out Header>?,
+                    responseBody: ByteArray
             ) {
                 try {
                     val result = String(responseBody)
                     val responseObject = JSONObject(result)
-                    val userItems = UserModel()
 
                     userItems.username = responseObject.getString("login")
                     userItems.avatar = responseObject.getString("avatar_url")
@@ -94,9 +152,9 @@ class DetailUser : AppCompatActivity(){
                     listData.add(userItems)
 
                     Glide.with(this@DetailUser)
-                        .load(userItems.avatar)
-                        .apply(RequestOptions()).override(350,550)
-                        .into(binding.imgItemAvatar)
+                            .load(userItems.avatar)
+                            .apply(RequestOptions()).override(350,550)
+                            .into(binding.imgItemAvatar)
 
                     binding.tvItemName.text = userItems.name
                     binding.tvItemUsername.text = userItems.username
@@ -121,10 +179,10 @@ class DetailUser : AppCompatActivity(){
             }
 
             override fun onFailure(
-                statusCode: Int,
-                headers: Array<out Header>?,
-                responseBody: ByteArray?,
-                error: Throwable?
+                    statusCode: Int,
+                    headers: Array<out Header>?,
+                    responseBody: ByteArray?,
+                    error: Throwable?
             ) {
                 Log.d("onFailure", error?.message.toString())
             }

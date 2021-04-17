@@ -13,7 +13,6 @@ import com.dicoding.picodiploma.githubusersubmission2.adapter.FollowersAdapter
 import com.dicoding.picodiploma.githubusersubmission2.databinding.FragmentFollowersBinding
 import com.dicoding.picodiploma.githubusersubmission2.viewmodel.FollowersViewModel
 
-
 class FollowersFragment : Fragment() {
 
     companion object {
@@ -60,12 +59,14 @@ class FollowersFragment : Fragment() {
         Log.d("username: ", username.toString())
 
 
-        viewModel.getListFollowers().observe(activity!!, Observer {userItems ->
-            if (userItems != null) {
-                adapter.setData(userItems)
-                showLoading(false)
-            }
-        })
+        activity?.let {
+            viewModel.getListFollowers().observe(it, Observer { userItems ->
+                if (userItems != null) {
+                    adapter.setData(userItems)
+                    showLoading(false)
+                }
+            })
+        }
     }
 
     private fun showLoading(state: Boolean) {

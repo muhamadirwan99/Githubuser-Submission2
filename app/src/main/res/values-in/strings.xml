@@ -22,5 +22,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Halo ini fragmen kosong</string>
     <string name="change_language_settings">Ubah Pengaturan Bahasa</string>
-
+    <string name="favorite">Favorit</string>
+    <string name="settings">Pengaturan</string>
+    <string name="alarm_text">Ingkatkan pada pukul 9.00 </string>
 </resources>
